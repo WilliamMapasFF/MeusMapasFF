@@ -84,7 +84,15 @@
         alert("Código copiado!");
       });
     }
-  </script>
+  <script>
+  function copiarCodigo(id) {
+    const textoOriginal = document.getElementById(id).innerText;
+    const textoLimpo = textoOriginal.replace(/\s+/g, '').trim();
+    navigator.clipboard.writeText(textoLimpo).then(() => {
+      alert("Código copiado!");
+    });
+  }
+</script>
 
 </body>
 </html>
