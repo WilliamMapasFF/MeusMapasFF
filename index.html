@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Mapa Pra Fazer Missão Rápida FF</title>
+  <title>Meus Mapas FF</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -17,7 +17,7 @@
       border-radius: 12px;
       box-shadow: 0 0 10px #000;
       max-width: 400px;
-      margin: auto;
+      margin: 20px auto;
     }
     h1 {
       color: #00e676;
@@ -52,22 +52,45 @@
   </style>
 </head>
 <body>
+
+  <!-- Mapa 1 -->
   <div class="container">
-    <h1>Mapa Pra Fazer Missões Rápidas Free Fire</h1>
-    <p>Fazer Missões Rápidas</p>
-    <div class="code-box" id="mapaCodigo">
+    <h1>Mapa Pra Fazer Missões Rápidas FF</h1>
+    <p>Fazer Missões Rápidass</p>
+    <div class="code-box" id="mapaCodigo1">
       #FREEFIRE88FBECA98C54C4C5D48F3FE7A7E900589762
     </div>
-    <button onclick="copiarCodigo()">Copiar Código</button>
+    <button onclick="copiarCodigo('mapaCodigo1')">Copiar Código</button>
+  </div>
+
+  <!-- Mapa 2 -->
+  <div class="container">
+    <h1><strong>Mapa 3x3 Só Capa2</strong></h1>
+    <p><strong>3x3 só capa 2</strong></p>
+    <div class="code-box" id="mapaCodigo2">
+      <strong>#FREEFIRE728E494675D09173B2FA2664EF9B2F9E9762</strong>
+    </div>
+    <button onclick="copiarCodigo('mapaCodigo2')">Copiar Código</button>
+  </div>
+
+  <!-- Mapa 3 -->
+  <div class="container">
+    <h1><strong>Nome do Mapa 3</strong></h1>
+    <p><strong>Descrição do Mapa 3</strong></p>
+    <div class="code-box" id="mapaCodigo3">
+      <strong>#COLOQUE_SEU_CÓDIGO_AQUI</strong>
+    </div>
+    <button onclick="copiarCodigo('mapaCodigo3')">Copiar Código</button>
   </div>
 
   <script>
-    function copiarCodigo() {
-      const texto = document.getElementById("mapaCodigo").innerText;
+    function copiarCodigo(id) {
+      const texto = document.getElementById(id).innerText;
       navigator.clipboard.writeText(texto).then(() => {
         alert("Código copiado!");
       });
     }
   </script>
+
 </body>
 </html>
