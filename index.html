@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Mapa Pra Fazer Missão Rápida FF</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1f1f1f;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      background-color: #2c2c2c;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #000;
+      max-width: 400px;
+      margin: auto;
+    }
+    h1 {
+      color: #00e676;
+      font-size: 24px;
+    }
+    p {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    .code-box {
+      background: #333;
+      padding: 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 16px;
+      margin-top: 15px;
+      position: relative;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+      background-color: #00e676;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00c853;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Mapa Pra Fazer Missão Rápida FF</h1>
+    <p>Fazer Missão Rápidas</p>
+    <div class="code-box" id="mapaCodigo">
+      #FREEFIRE88FBECA98C54C4C5D48F3FE7A7E900589762
+    </div>
+    <button onclick="copiarCodigo()">Copiar Código</button>
+  </div>
+
+  <script>
+    function copiarCodigo() {
+      const texto = document.getElementById("mapaCodigo").innerText;
+      navigator.clipboard.writeText(texto).then(() => {
+        alert("Código copiado!");
+      });
+    }
+  </script>
+</body>
+</html>
