@@ -77,14 +77,20 @@
     <button onclick="copiarCodigo('mapaCodigo3')">Copiar Código</button>
   </div>
 
+  <!-- OUTROS ELEMENTOS AQUI -->
+
   <script>
     function copiarCodigo(id) {
-      const texto = document.getElementById(id).innerText;
-      navigator.clipboard.writeText(texto).then(() => {
+      const textoOriginal = document.getElementById(id).innerText;
+      const textoLimpo = textoOriginal.replace(/\s+/g, '').trim();
+      navigator.clipboard.writeText(textoLimpo).then(() => {
         alert("Código copiado!");
       });
     }
   </script>
+
+</body>
+</html>
 
 </body>
 </html>
