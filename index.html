@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MEUS MAPAS FF</title>
   <style>
     body {
@@ -44,9 +44,58 @@
     button:hover {
       background-color: #00c853;
     }
+    /* Estilo para o seletor de música */
+    .music-selector {
+      background-color: #333;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    select {
+      padding: 8px;
+      font-size: 16px;
+      background-color: #444;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+    }
+    .toggle-music-button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff5722;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .toggle-music-button:hover {
+      background-color: #e64a19;
+    }
   </style>
 </head>
 <body>
+
+<!-- Seção de seleção de música -->
+<div class="music-selector">
+  <h2>Escolha uma música para ouvir</h2>
+  <select id="music-selector" onchange="changeMusic()">
+    <option value="1">Música 1: Summer</option>
+    <option value="2">Música 2: Acoustic Breeze</option>
+    <option value="3">Música 3: Slow Motion</option>
+    <option value="4">Música 4: Jazz Comedy</option>
+    <option value="5">Música 5: Rumble</option>
+    <option value="6">Música 6: Little Idea</option>
+    <option value="7">Música 7: Cute</option>
+    <option value="8">Música 8: Energy</option>
+    <option value="9">Música 9: The Elevator Bossa Nova</option>
+    <option value="10">Música 10: New Dawn</option>
+  </select>
+  <audio id="bgmusic" loop preload="auto">
+    <source src="https://www.bensound.com/bensound-music/bensound-summer.mp3" type="audio/mp3">
+  </audio>
+  <button class="toggle-music-button" onclick="toggleMusic()">Ligar Música</button>
+</div>
 
 <h1 style="color: #228B22;">William MapasFF</h1>
 
@@ -86,11 +135,11 @@
   <p>Gostou dos mapas? Você pode me ajudar com um Pix!</p>
 
   <!-- QR Code Pix -->
-<div class="pix-box">
-  <h2>Doar com QR Code</h2>
-  <img src="https://imgur.com/a/jQg0KJC" alt="QR Code Pix" style="width: 200px; border-radius: 10px;">
-  <p style="font-size: 14px; color: #ccc;">Clique e segure no "QR Code Pix" Para Visualizar a imagem. Escaneie com seu app de banco</p>
-</div>
+  <div class="pix-box">
+    <h2>Doar com QR Code</h2>
+    <img src="https://imgur.com/a/jQg0KJC" alt="QR Code Pix" style="width: 200px; border-radius: 10px;">
+    <p style="font-size: 14px; color: #ccc;">Clique e segure no "QR Code Pix" Para Visualizar a imagem. Escaneie com seu app de banco</p>
+  </div>
 
   <!-- Pix Copia e Cola -->
   <div class="pix-box">
@@ -103,6 +152,8 @@
   <!-- OUTROS ELEMENTOS AQUI -->
 
   <script>
+    let musicPlaying = false;
+    
     function copiarCodigo(id) {
       const textoOriginal = document.getElementById(id).innerText;
       const textoLimpo = textoOriginal.replace(/\s+/g, '').trim();
@@ -110,12 +161,74 @@
         alert("Código copiado!");
       });
     }
-function copiarPix() {
-  const chave = document.getElementById("pixChave").innerText.trim();
-  navigator.clipboard.writeText(chave).then(() => {
-    alert("Chave Pix copiada!");
-  });
-}
+
+    function copiarPix() {
+      const chave = document.getElementById("pixChave").innerText.trim();
+      navigator.clipboard.writeText(chave).then(() => {
+        alert("Chave Pix copiada!");
+      });
+    }
+
+    function toggleMusic() {
+      const music = document.getElementById("bgmusic");
+      const button = document.querySelector(".toggle-music-button");
+
+      if (musicPlaying) {
+        music.pause();
+        button.textContent = "Ligar Música";
+      } else {
+        music.play();
+        button.textContent = "Desligar Música";
+      }
+      
+      musicPlaying = !musicPlaying;
+    }
+
+    function changeMusic() {
+      const musicSelector = document.getElementById("music-selector");
+      const music = document.getElementById("bgmusic");
+      let musicUrl = "";
+      
+      // Definir a URL da música com base na escolha
+      switch (musicSelector.value) {
+        case "1":
+          musicUrl = "https://www.bensound.com/bensound-music/bensound-summer.mp3";
+          break;
+        case "2":
+          musicUrl = "https://www.bensound.com/bensound-music/bensound-acousticbreeze.mp3";
+          break;
+        case "3":
+          musicUrl = "https://www.bensound.com/bensound-music/bensound-slowmotion.mp3";
+          break;
+        case "4":
+          musicUrl = "https://www.bensound.com/bensound-music/bensound-jazzcomedy.mp3";
+          break;
+        case "5":
+          musicUrl = "https://www.bensound.com/bensound-music/bensound-rumble.mp3";
+          break;
+        case "6":
+          musicUrl = "https://www.bensound.com/bensound-music/bensound-littleidea.mp3";
+          break;
+        case "7":
+          musicUrl = "https://www.bensound.com/bensound-music/bensound-cute.mp3";
+          break;
+        case "8":
+          musicUrl = "https://www.bensound.com/bensound-music/bensound-energy.mp3";
+          break;
+        case "9":
+          musicUrl = "https://www.bensound.com/bensound-music/bensound-theelevatorbossanova.mp3";
+          break;
+        case "10":
+          musicUrl = "https://www.bensound.com/bensound-music/bensound-newdawn.mp3";
+          break;
+      }
+
+      // Trocar a música e reiniciar
+      music.src = musicUrl;
+      if (musicPlaying) {
+        music.play();
+      }
+    }
   </script>
 
 <footer style="margin-top: 40px; font-size: 14px; color: #aaa;">
