@@ -268,6 +268,7 @@
     textoComentario.innerHTML = `<strong>${nome}:</strong> ${comentario}`;
     comentarioDiv.appendChild(textoComentario);
 
+    // Botão Responder
     const responderBtn = document.createElement('button');
     responderBtn.textContent = "Responder";
     responderBtn.style.marginTop = "5px";
@@ -280,8 +281,29 @@
     responderBtn.onclick = function() {
       responderComentario(comentarioDiv);
     };
+    
+    // Botão Apagar
+    const apagarBtn = document.createElement('button');
+    apagarBtn.textContent = "Apagar";
+    apagarBtn.style.backgroundColor = "#e53935";
+    apagarBtn.style.color = "#fff";
+    apagarBtn.style.border = "none";
+    apagarBtn.style.borderRadius = "5px";
+    apagarBtn.style.padding = "5px 10px";
+    apagarBtn.style.cursor = "pointer";
+    apagarBtn.onclick = function() {
+      apagarComentario(comentarioDiv);
+    };
 
     comentarioDiv.appendChild(responderBtn);
+    comentarioDiv.appendChild(apagarBtn);
+    
+    // Adicionar o comentário no localStorage
+    const comentariosSalvos = JSON.parse(localStorage.getItem('comentarios')) || [];
+    comentariosSalvos.push({ nome, comentario });
+    localStorage.setItem('comentarios', JSON.stringify(comentariosSalvos));
+
+    // Adicionar o comentário à página
     listaComentarios.appendChild(comentarioDiv);
 
     document.getElementById('nomeUsuario').value = "";
@@ -302,11 +324,71 @@ function responderComentario(comentarioDiv) {
     respostaDiv.style.color = "#00e676";
     comentarioDiv.appendChild(respostaDiv);
   }
-    }function apagarComentario(comentarioDiv) {
+}
+
+function apagarComentario(comentarioDiv) {
   if (confirm("Tem certeza que deseja apagar este comentário?")) {
     comentarioDiv.remove();
-  }
+    
+    // Atualizar o localStorage após apagar
+    const comentariosSalvos = JSON.parse(localStorage.getItem('comentarios')) || [];
+    const index = comentariosSalvos.findIndex(c => c.nome === comentarioDiv.querySelector('strong').innerText.replace(":", ""));
+    if (index !== -1) {
+      comentariosSalvos.splice(index, 1);
+      localStorage.setItem('comentarios', JSON.stringify(comentariosSalvos));
     }
+  }
+}
+
+// Carregar os comentários salvos ao abrir a página
+window.onload = function() {
+  const comentariosSalvos = JSON.parse(localStorage.getItem('comentarios')) || [];
+  const listaComentarios = document.getElementById('comentarios');
+  
+  comentariosSalvos.forEach(comentario => {
+    const comentarioDiv = document.createElement('div');
+    comentarioDiv.style.padding = "10px";
+    comentarioDiv.style.marginBottom = "15px";
+    comentarioDiv.style.borderBottom = "1px solid #555";
+
+    const textoComentario = document.createElement('p');
+    textoComentario.innerHTML = `<strong>${comentario.nome}:</strong> ${comentario.comentario}`;
+    comentarioDiv.appendChild(textoComentario);
+
+    // Botão Responder
+    const responderBtn = document.createElement('button');
+    responderBtn.textContent = "Responder";
+    responderBtn.style.marginTop = "5px";
+    responderBtn.style.backgroundColor = "#ff5722";
+    responderBtn.style.color = "#fff";
+    responderBtn.style.border = "none";
+    responderBtn.style.borderRadius = "5px";
+    responderBtn.style.padding = "5px 10px";
+    responderBtn.style.cursor = "pointer";
+    responderBtn.onclick = function() {
+      responderComentario(comentarioDiv);
+    };
+    
+    // Botão Apagar
+    const apagarBtn = document.createElement('button');
+    apagarBtn.textContent = "Apagar";
+    apagarBtn.style.backgroundColor = "#e53935";
+    apagarBtn.style.color = "#fff";
+    apagarBtn.style.border = "none";
+    apagarBtn.style.borderRadius = "5px";
+    apagarBtn.style.padding = "5px 10px";
+    apagarBtn.style.cursor = "pointer";
+    apagarBtn.onclick = function() {
+      apagarComentario(comentarioDiv);
+    };
+
+    comentarioDiv.appendChild(responderBtn);
+    comentarioDiv.appendChild(apagarBtn);
+
+    // Adicionar o comentário à página
+    listaComentarios.appendChild(comentarioDiv);
+  });
+}
   </script>
 
 <footer style="margin-top: 40px; font-size: 14px; color: #aaa;">
