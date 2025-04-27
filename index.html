@@ -253,71 +253,73 @@
       }
     }
 
-    // Função para armazenar os comentários no localStorage
-function salvarComentarios(comentarios) {
-  localStorage.setItem('comentarios', JSON.stringify(comentarios));
-}
-
-// Função para carregar os comentários do localStorage
+    // Função para carregar os comentários do localStorage
 function carregarComentarios() {
   return JSON.parse(localStorage.getItem('comentarios')) || [];
 }
 
-// Função para exibir os comentários na página
+// Função para salvar os comentários no localStorage
+function salvarComentarios(comentarios) {
+  localStorage.setItem('comentarios', JSON.stringify(comentarios));
+}
+
+// Função para exibir os comentários
 function exibirComentarios() {
   const listaComentarios = document.getElementById('comentarios');
-  const comentarios = carregarComentarios();
-  listaComentarios.innerHTML = ""; // Limpa a lista antes de exibir
+  listaComentarios.innerHTML = ""; // Limpa a lista de comentários antes de exibir
 
-  comentarios.forEach(comentario => {
-    const comentarioDiv = criarComentarioDiv(comentario);
+  const comentarios = carregarComentarios();
+  comentarios.forEach((comentario, index) => {
+    const comentarioDiv = document.createElement('div');
+    comentarioDiv.style.padding = "10px";
+    comentarioDiv.style.marginBottom = "15px";
+    comentarioDiv.style.borderBottom = "1px solid #555";
+
+    const textoComentario = document.createElement('p');
+    textoComentario.innerHTML = `<strong>${comentario.nome}:</strong> ${comentario.comentario}`;
+    comentarioDiv.appendChild(textoComentario);
+
+    // Botão de resposta
+    const responderBtn = document.createElement('button');
+    responderBtn.textContent = "Responder";
+    responderBtn.style.marginTop = "5px";
+    responderBtn.style.backgroundColor = "#ff5722";
+    responderBtn.style.color = "#fff";
+    responderBtn.style.border = "none";
+    responderBtn.style.borderRadius = "5px";
+    responderBtn.style.padding = "5px 10px";
+    responderBtn.style.cursor = "pointer";
+    responderBtn.onclick = function() {
+      responderComentario(index);
+    };
+    comentarioDiv.appendChild(responderBtn);
+
+    // Botão de apagar
+    const apagarBtn = document.createElement('button');
+    apagarBtn.textContent = "Apagar";
+    apagarBtn.style.marginTop = "5px";
+    apagarBtn.style.backgroundColor = "#e53935";
+    apagarBtn.style.color = "#fff";
+    apagarBtn.style.border = "none";
+    apagarBtn.style.borderRadius = "5px";
+    apagarBtn.style.padding = "5px 10px";
+    apagarBtn.style.cursor = "pointer";
+    apagarBtn.onclick = function() {
+      apagarComentario(index);
+    };
+    comentarioDiv.appendChild(apagarBtn);
+
+    // Exibe respostas, se houver
+    comentario.respostas.forEach(resposta => {
+      const respostaDiv = document.createElement('p');
+      respostaDiv.innerHTML = `<strong>William (dono):</strong> ${resposta}`;
+      respostaDiv.style.marginLeft = "20px";
+      respostaDiv.style.color = "#00e676";
+      comentarioDiv.appendChild(respostaDiv);
+    });
+
     listaComentarios.appendChild(comentarioDiv);
   });
-}
-
-// Função para criar o HTML de cada comentário
-function criarComentarioDiv(comentario) {
-  const comentarioDiv = document.createElement('div');
-  comentarioDiv.style.padding = "10px";
-  comentarioDiv.style.marginBottom = "15px";
-  comentarioDiv.style.borderBottom = "1px solid #555";
-
-  const textoComentario = document.createElement('p');
-  textoComentario.innerHTML = `<strong>${comentario.nome}:</strong> ${comentario.comentario}`;
-  comentarioDiv.appendChild(textoComentario);
-
-  // Adiciona as respostas
-  comentario.respostas.forEach(resposta => {
-    const respostaDiv = document.createElement('p');
-    respostaDiv.innerHTML = `<strong>William (DONO):</strong> ${resposta}`;
-    respostaDiv.style.marginLeft = "20px";
-    respostaDiv.style.marginTop = "5px";
-    respostaDiv.style.color = "#00e676";
-    comentarioDiv.appendChild(respostaDiv);
-  });
-
-  // Botões de resposta e apagar
-  const responderBtn = criarBotao("Responder", "#ff5722", () => responderComentario(comentarioDiv));
-  const apagarBtn = criarBotao("Apagar", "#e53935", () => apagarComentario(comentarioDiv));
-
-  comentarioDiv.appendChild(responderBtn);
-  comentarioDiv.appendChild(apagarBtn);
-
-  return comentarioDiv;
-}
-
-// Função para criar um botão
-function criarBotao(texto, cor, onClick) {
-  const botao = document.createElement('button');
-  botao.textContent = texto;
-  botao.style.backgroundColor = cor;
-  botao.style.color = "#fff";
-  botao.style.border = "none";
-  botao.style.borderRadius = "5px";
-  botao.style.padding = "5px 10px";
-  botao.style.cursor = "pointer";
-  botao.onclick = onClick;
-  return botao;
 }
 
 // Função para enviar um novo comentário
@@ -328,12 +330,12 @@ function enviarComentario() {
   if (nome && comentario) {
     const comentarios = carregarComentarios();
     comentarios.push({ nome, comentario, respostas: [] });
-
     salvarComentarios(comentarios);
-    exibirComentarios();
 
     document.getElementById('nomeUsuario').value = "";
     document.getElementById('comentario').value = "";
+
+    exibirComentarios();
     alert("Comentário enviado!");
   } else {
     alert("Por favor, preencha seu nome e o comentário.");
@@ -341,27 +343,22 @@ function enviarComentario() {
 }
 
 // Função para responder a um comentário
-function responderComentario(comentarioDiv) {
+function responderComentario(indiceComentario) {
   const resposta = prompt("Digite sua resposta:");
   if (resposta && resposta.trim() !== "") {
-    const nomeComentario = comentarioDiv.querySelector('strong').innerText.replace(":", "");
     const comentarios = carregarComentarios();
-    const comentario = comentarios.find(c => c.nome === nomeComentario);
+    comentarios[indiceComentario].respostas.push(resposta);
+    salvarComentarios(comentarios);
 
-    if (comentario) {
-      comentario.respostas.push(resposta);
-      salvarComentarios(comentarios);
-      exibirComentarios();
-    }
+    exibirComentarios();
   }
 }
 
 // Função para apagar um comentário
-function apagarComentario(comentarioDiv) {
+function apagarComentario(indiceComentario) {
   if (confirm("Tem certeza que deseja apagar este comentário?")) {
-    const nomeComentario = comentarioDiv.querySelector('strong').innerText.replace(":", "");
-    let comentarios = carregarComentarios();
-    comentarios = comentarios.filter(c => c.nome !== nomeComentario);
+    const comentarios = carregarComentarios();
+    comentarios.splice(indiceComentario, 1); // Remove o comentário
 
     salvarComentarios(comentarios);
     exibirComentarios();
