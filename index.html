@@ -303,6 +303,11 @@ function responderComentario(comentarioDiv) {
     comentarioDiv.appendChild(respostaDiv);
   }
     }
+    function apagarComentario(comentarioDiv) {
+  if (confirm("Tem certeza que deseja apagar este comentário?")) {
+    comentarioDiv.remove();
+  }
+    }
     
   </script>
 
