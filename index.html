@@ -281,7 +281,7 @@
     responderBtn.onclick = function() {
       responderComentario(comentarioDiv);
     };
-    
+
     // Botão Apagar
     const apagarBtn = document.createElement('button');
     apagarBtn.textContent = "Apagar";
@@ -297,7 +297,7 @@
 
     comentarioDiv.appendChild(responderBtn);
     comentarioDiv.appendChild(apagarBtn);
-    
+
     // Adicionar o comentário no localStorage
     const comentariosSalvos = JSON.parse(localStorage.getItem('comentarios')) || [];
     comentariosSalvos.push({ nome, comentario, respostas: [] });
@@ -323,7 +323,7 @@ function responderComentario(comentarioDiv) {
     respostaDiv.style.marginTop = "5px";
     respostaDiv.style.color = "#00e676";
     comentarioDiv.appendChild(respostaDiv);
-    
+
     // Adicionar a resposta ao comentário no localStorage
     const nomeComentario = comentarioDiv.querySelector('strong').innerText.replace(":", "");
     const comentariosSalvos = JSON.parse(localStorage.getItem('comentarios')) || [];
@@ -339,7 +339,7 @@ function responderComentario(comentarioDiv) {
 function apagarComentario(comentarioDiv) {
   if (confirm("Tem certeza que deseja apagar este comentário?")) {
     comentarioDiv.remove();
-    
+
     // Atualizar o localStorage após apagar
     const nomeComentario = comentarioDiv.querySelector('strong').innerText.replace(":", "");
     const comentariosSalvos = JSON.parse(localStorage.getItem('comentarios')) || [];
@@ -356,7 +356,10 @@ function apagarComentario(comentarioDiv) {
 window.onload = function() {
   const comentariosSalvos = JSON.parse(localStorage.getItem('comentarios')) || [];
   const listaComentarios = document.getElementById('comentarios');
-  
+
+  // Limpar a lista de comentários antes de preencher com os salvos
+  listaComentarios.innerHTML = "";
+
   comentariosSalvos.forEach(comentario => {
     const comentarioDiv = document.createElement('div');
     comentarioDiv.style.padding = "10px";
@@ -390,7 +393,7 @@ window.onload = function() {
     responderBtn.onclick = function() {
       responderComentario(comentarioDiv);
     };
-    
+
     // Botão Apagar
     const apagarBtn = document.createElement('button');
     apagarBtn.textContent = "Apagar";
@@ -411,7 +414,6 @@ window.onload = function() {
     listaComentarios.appendChild(comentarioDiv);
   });
 }
-
   </script>
 
 <footer style="margin-top: 40px; font-size: 14px; color: #aaa;">
