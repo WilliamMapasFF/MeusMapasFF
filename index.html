@@ -161,6 +161,20 @@
   </div>
 </div>
 
+  <!-- Seção de Comentários e Sugestões -->
+<div class="container">
+  <h1>Comentários e Sugestões</h1>
+  <p>Encontrou algum bug ou tem uma sugestão? Deixe sua mensagem!</p>
+  
+  <input type="text" id="nomeUsuario" placeholder="Seu nome" style="width: 100%; padding: 10px; border-radius: 8px; border: none; margin-top: 10px; font-size: 16px;">
+  
+  <textarea id="comentario" placeholder="Escreva seu comentário..." style="width: 100%; height: 100px; padding: 10px; border-radius: 8px; border: none; margin-top: 10px; font-size: 16px; resize: none;"></textarea>
+  
+  <button onclick="enviarComentario()" style="margin-top: 10px;">Enviar Comentário</button>
+  
+  <div id="comentarios" style="margin-top: 30px; text-align: left;"></div>
+</div>
+
   <!-- OUTROS ELEMENTOS AQUI -->
 
   <script>
@@ -238,6 +252,58 @@
         music.play();
       }
     }
+
+    function enviarComentario() {
+  const nome = document.getElementById('nomeUsuario').value.trim();
+  const comentario = document.getElementById('comentario').value.trim();
+  const listaComentarios = document.getElementById('comentarios');
+
+  if (nome !== "" && comentario !== "") {
+    const comentarioDiv = document.createElement('div');
+    comentarioDiv.style.padding = "10px";
+    comentarioDiv.style.marginBottom = "15px";
+    comentarioDiv.style.borderBottom = "1px solid #555";
+
+    const textoComentario = document.createElement('p');
+    textoComentario.innerHTML = `<strong>${nome}:</strong> ${comentario}`;
+    comentarioDiv.appendChild(textoComentario);
+
+    const responderBtn = document.createElement('button');
+    responderBtn.textContent = "Responder";
+    responderBtn.style.marginTop = "5px";
+    responderBtn.style.backgroundColor = "#ff5722";
+    responderBtn.style.color = "#fff";
+    responderBtn.style.border = "none";
+    responderBtn.style.borderRadius = "5px";
+    responderBtn.style.padding = "5px 10px";
+    responderBtn.style.cursor = "pointer";
+    responderBtn.onclick = function() {
+      responderComentario(comentarioDiv);
+    };
+
+    comentarioDiv.appendChild(responderBtn);
+    listaComentarios.appendChild(comentarioDiv);
+
+    document.getElementById('nomeUsuario').value = "";
+    document.getElementById('comentario').value = "";
+    alert("Comentário enviado!");
+  } else {
+    alert("Por favor, preencha seu nome e o comentário.");
+  }
+}
+
+function responderComentario(comentarioDiv) {
+  const resposta = prompt("Digite sua resposta:");
+  if (resposta && resposta.trim() !== "") {
+    const respostaDiv = document.createElement('p');
+    respostaDiv.innerHTML = `<strong>William (dono):</strong> ${resposta}`;
+    respostaDiv.style.marginLeft = "20px";
+    respostaDiv.style.marginTop = "5px";
+    respostaDiv.style.color = "#00e676";
+    comentarioDiv.appendChild(respostaDiv);
+  }
+    }
+    
   </script>
 
 <footer style="margin-top: 40px; font-size: 14px; color: #aaa;">
