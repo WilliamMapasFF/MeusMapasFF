@@ -253,33 +253,22 @@
       }
     }
 
-    // Função para carregar os comentários do localStorage
-function carregarComentarios() {
-  return JSON.parse(localStorage.getItem('comentarios')) || [];
-}
-
-// Função para salvar os comentários no localStorage
-function salvarComentarios(comentarios) {
-  localStorage.setItem('comentarios', JSON.stringify(comentarios));
-}
-
-// Função para exibir os comentários
-function exibirComentarios() {
+    function enviarComentario() {
+  const nome = document.getElementById('nomeUsuario').value.trim();
+  const comentario = document.getElementById('comentario').value.trim();
   const listaComentarios = document.getElementById('comentarios');
-  listaComentarios.innerHTML = ""; // Limpa a lista de comentários antes de exibir
 
-  const comentarios = carregarComentarios();
-  comentarios.forEach((comentario, index) => {
+  if (nome !== "" && comentario !== "") {
     const comentarioDiv = document.createElement('div');
     comentarioDiv.style.padding = "10px";
     comentarioDiv.style.marginBottom = "15px";
     comentarioDiv.style.borderBottom = "1px solid #555";
 
     const textoComentario = document.createElement('p');
-    textoComentario.innerHTML = `<strong>${comentario.nome}:</strong> ${comentario.comentario}`;
+    textoComentario.innerHTML = `<strong>${nome}:</strong> ${comentario}`;
     comentarioDiv.appendChild(textoComentario);
 
-    // Botão de resposta
+    // Botão Responder
     const responderBtn = document.createElement('button');
     responderBtn.textContent = "Responder";
     responderBtn.style.marginTop = "5px";
@@ -290,14 +279,12 @@ function exibirComentarios() {
     responderBtn.style.padding = "5px 10px";
     responderBtn.style.cursor = "pointer";
     responderBtn.onclick = function() {
-      responderComentario(index);
+      responderComentario(comentarioDiv);
     };
-    comentarioDiv.appendChild(responderBtn);
-
-    // Botão de apagar
+    
+    // Botão Apagar
     const apagarBtn = document.createElement('button');
     apagarBtn.textContent = "Apagar";
-    apagarBtn.style.marginTop = "5px";
     apagarBtn.style.backgroundColor = "#e53935";
     apagarBtn.style.color = "#fff";
     apagarBtn.style.border = "none";
@@ -305,68 +292,103 @@ function exibirComentarios() {
     apagarBtn.style.padding = "5px 10px";
     apagarBtn.style.cursor = "pointer";
     apagarBtn.onclick = function() {
-      apagarComentario(index);
+      apagarComentario(comentarioDiv);
     };
+
+    comentarioDiv.appendChild(responderBtn);
     comentarioDiv.appendChild(apagarBtn);
+    
+    // Adicionar o comentário no localStorage
+    const comentariosSalvos = JSON.parse(localStorage.getItem('comentarios')) || [];
+    comentariosSalvos.push({ nome, comentario });
+    localStorage.setItem('comentarios', JSON.stringify(comentariosSalvos));
 
-    // Exibe respostas, se houver
-    comentario.respostas.forEach(resposta => {
-      const respostaDiv = document.createElement('p');
-      respostaDiv.innerHTML = `<strong>William (dono):</strong> ${resposta}`;
-      respostaDiv.style.marginLeft = "20px";
-      respostaDiv.style.color = "#00e676";
-      comentarioDiv.appendChild(respostaDiv);
-    });
-
+    // Adicionar o comentário à página
     listaComentarios.appendChild(comentarioDiv);
-  });
-}
-
-// Função para enviar um novo comentário
-function enviarComentario() {
-  const nome = document.getElementById('nomeUsuario').value.trim();
-  const comentario = document.getElementById('comentario').value.trim();
-
-  if (nome && comentario) {
-    const comentarios = carregarComentarios();
-    comentarios.push({ nome, comentario, respostas: [] });
-    salvarComentarios(comentarios);
 
     document.getElementById('nomeUsuario').value = "";
     document.getElementById('comentario').value = "";
-
-    exibirComentarios();
     alert("Comentário enviado!");
   } else {
     alert("Por favor, preencha seu nome e o comentário.");
   }
 }
 
-// Função para responder a um comentário
-function responderComentario(indiceComentario) {
+function responderComentario(comentarioDiv) {
   const resposta = prompt("Digite sua resposta:");
   if (resposta && resposta.trim() !== "") {
-    const comentarios = carregarComentarios();
-    comentarios[indiceComentario].respostas.push(resposta);
-    salvarComentarios(comentarios);
-
-    exibirComentarios();
+    const respostaDiv = document.createElement('p');
+    respostaDiv.innerHTML = `<strong>William (dono):</strong> ${resposta}`;
+    respostaDiv.style.marginLeft = "20px";
+    respostaDiv.style.marginTop = "5px";
+    respostaDiv.style.color = "#00e676";
+    comentarioDiv.appendChild(respostaDiv);
   }
 }
 
-// Função para apagar um comentário
-function apagarComentario(indiceComentario) {
+function apagarComentario(comentarioDiv) {
   if (confirm("Tem certeza que deseja apagar este comentário?")) {
-    const comentarios = carregarComentarios();
-    comentarios.splice(indiceComentario, 1); // Remove o comentário
-
-    salvarComentarios(comentarios);
-    exibirComentarios();
+    comentarioDiv.remove();
+    
+    // Atualizar o localStorage após apagar
+    const comentariosSalvos = JSON.parse(localStorage.getItem('comentarios')) || [];
+    const index = comentariosSalvos.findIndex(c => c.nome === comentarioDiv.querySelector('strong').innerText.replace(":", ""));
+    if (index !== -1) {
+      comentariosSalvos.splice(index, 1);
+      localStorage.setItem('comentarios', JSON.stringify(comentariosSalvos));
+    }
   }
 }
 
-// Carregar os comentários ao carregar a página
-window.onload = exibirComentarios;
+// Carregar os comentários salvos ao abrir a página
+window.onload = function() {
+  const comentariosSalvos = JSON.parse(localStorage.getItem('comentarios')) || [];
+  const listaComentarios = document.getElementById('comentarios');
+  
+  comentariosSalvos.forEach(comentario => {
+    const comentarioDiv = document.createElement('div');
+    comentarioDiv.style.padding = "10px";
+    comentarioDiv.style.marginBottom = "15px";
+    comentarioDiv.style.borderBottom = "1px solid #555";
+
+    const textoComentario = document.createElement('p');
+    textoComentario.innerHTML = `<strong>${comentario.nome}:</strong> ${comentario.comentario}`;
+    comentarioDiv.appendChild(textoComentario);
+
+    // Botão Responder
+    const responderBtn = document.createElement('button');
+    responderBtn.textContent = "Responder";
+    responderBtn.style.marginTop = "5px";
+    responderBtn.style.backgroundColor = "#ff5722";
+    responderBtn.style.color = "#fff";
+    responderBtn.style.border = "none";
+    responderBtn.style.borderRadius = "5px";
+    responderBtn.style.padding = "5px 10px";
+    responderBtn.style.cursor = "pointer";
+    responderBtn.onclick = function() {
+      responderComentario(comentarioDiv);
+    };
+    
+    // Botão Apagar
+    const apagarBtn = document.createElement('button');
+    apagarBtn.textContent = "Apagar";
+    apagarBtn.style.backgroundColor = "#e53935";
+    apagarBtn.style.color = "#fff";
+    apagarBtn.style.border = "none";
+    apagarBtn.style.borderRadius = "5px";
+    apagarBtn.style.padding = "5px 10px";
+    apagarBtn.style.cursor = "pointer";
+    apagarBtn.onclick = function() {
+      apagarComentario(comentarioDiv);
+    };
+
+    comentarioDiv.appendChild(responderBtn);
+    comentarioDiv.appendChild(apagarBtn);
+
+    // Adicionar o comentário à página
+    listaComentarios.appendChild(comentarioDiv);
+  });
+    }
     
   </script>
 
