@@ -302,7 +302,7 @@ function mostrarComentariosSalvos() {
     responderBtn.onclick = function() {
       const resposta = prompt('Digite sua resposta:');
       if (resposta) {
-        comentarioDiv.innerHTML += `<br><strong>#00e676William MapasFF Dono:</strong> ${resposta}`;
+        comentarioDiv.innerHTML += style="color: #00e676; `<br><strong>William MapasFF Dono:</strong> ${resposta}`;
         comentarios[index].resposta = resposta;
         localStorage.setItem('comentarios', JSON.stringify(comentarios));
       }
