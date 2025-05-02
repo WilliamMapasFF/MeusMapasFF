@@ -302,7 +302,7 @@ function mostrarComentariosSalvos() {
     responderBtn.onclick = function() {
       const resposta = prompt('Digite sua resposta:');
       if (resposta) {
-        comentarioDiv.innerHTML += `<br><strong>William MapasFF (Dono):</strong> ${resposta}`;
+        comentarioDiv.innerHTML += `<br><strong>#00e676William MapasFF Dono:</strong> ${resposta}`;
         comentarios[index].resposta = resposta;
         localStorage.setItem('comentarios', JSON.stringify(comentarios));
       }
@@ -326,7 +326,7 @@ function mostrarComentariosSalvos() {
     // Mostrar resposta salva, se existir
     if (comentario.resposta) {
       const respostaDiv = document.createElement('div');
-      respostaDiv.innerHTML = `<strong>Dono:</strong> ${comentario.resposta}`;
+      respostaDiv.innerHTML = `<strong>William MapasFF Dono:</strong> ${comentario.resposta}`;
       respostaDiv.style.marginTop = '5px';
       comentarioDiv.appendChild(respostaDiv);
     }
