@@ -269,6 +269,16 @@ function enviarComentario() {
     alert("Por favor, preencha seu nome e comentário.");
     return;
   }
+  
+  if (nomeUsuario.length > 21) {
+  alert("O nome não pode ter mais que 21 caracteres.");
+  return;
+  }
+
+  if (comentario.length > 500) {
+  alert("O comentário deve ter no máximo 500 caracteres.");
+  return;
+  }
 
   if (nomeUsuario.toLowerCase() === 'william mapasff') {
     alert("O nome 'William MapasFF' é reservado e não pode ser usado.");
