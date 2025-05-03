@@ -253,24 +253,16 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+   document.addEventListener('DOMContentLoaded', function() {
   mostrarComentariosSalvos();
 });
 
-const senhaDono = "040609"; 
-const nomeDono = "william mapasff"; // vai comparar em minúsculas
-
 function enviarComentario() {
-  const nomeUsuario = document.getElementById('nomeUsuario').value.trim().toLowerCase();
+  const nomeUsuario = document.getElementById('nomeUsuario').value.trim();
   const comentario = document.getElementById('comentario').value.trim();
 
   if (!nomeUsuario || !comentario) {
     alert("Por favor, preencha seu nome e comentário.");
-    return;
-  }
-
-  if (nomeUsuario === nomeDono) {
-    alert("Esse nome está reservado.");
     return;
   }
 
@@ -294,7 +286,6 @@ function mostrarComentariosSalvos() {
   listaComentarios.innerHTML = '';
 
   const comentarios = JSON.parse(localStorage.getItem('comentarios')) || [];
-  const nomeAtual = document.getElementById('nomeUsuario').value.trim().toLowerCase();
 
   comentarios.forEach((comentario, index) => {
     const comentarioDiv = document.createElement('div');
@@ -305,20 +296,22 @@ function mostrarComentariosSalvos() {
 
     comentarioDiv.innerHTML = `<strong>${comentario.nome}</strong>: ${comentario.texto}`;
 
-    if (nomeAtual === nomeDono) {
-      const responderBtn = document.createElement('button');
-      responderBtn.textContent = 'Responder';
-      responderBtn.style.marginLeft = '10px';
-      responderBtn.onclick = function() {
+    const responderBtn = document.createElement('button');
+    responderBtn.textContent = 'Responder';
+    responderBtn.style.marginLeft = '10px';
+    responderBtn.onclick = function() {
+      const senha = prompt('Digite a senha para responder:');
+      if (senha === '040609') {
         const resposta = prompt('Digite sua resposta:');
         if (resposta) {
-          comentario.resposta = resposta;
+          comentarios[index].resposta = resposta;
           localStorage.setItem('comentarios', JSON.stringify(comentarios));
           mostrarComentariosSalvos();
         }
-      };
-      comentarioDiv.appendChild(responderBtn);
-    }
+      } else {
+        alert('Senha incorreta!');
+      }
+    };
 
     const apagarBtn = document.createElement('button');
     apagarBtn.textContent = 'Apagar';
@@ -330,36 +323,37 @@ function mostrarComentariosSalvos() {
       localStorage.setItem('comentarios', JSON.stringify(comentarios));
       mostrarComentariosSalvos();
     };
+
+    comentarioDiv.appendChild(responderBtn);
     comentarioDiv.appendChild(apagarBtn);
 
+    // Mostrar resposta salva, se existir
     if (comentario.resposta) {
       const respostaDiv = document.createElement('div');
-      respostaDiv.innerHTML = `<strong style="color:#39ff14;">${nomeDono}:</strong> <span style="color:#39ff14;">${comentario.resposta}</span>`;
+      respostaDiv.innerHTML = `<strong style="color: #39ff14;">Dono:</strong> ${comentario.resposta}`;
       respostaDiv.style.marginTop = '5px';
 
-      if (nomeAtual === nomeDono) {
-        const apagarRespostaBtn = document.createElement('button');
-        apagarRespostaBtn.textContent = 'Apagar resposta';
-        apagarRespostaBtn.style.marginLeft = '10px';
-        apagarRespostaBtn.onclick = function() {
-          const senha = prompt('Digite a senha para apagar a resposta:');
-          if (senha === senhaDono) {
-            delete comentario.resposta;
-            localStorage.setItem('comentarios', JSON.stringify(comentarios));
-            mostrarComentariosSalvos();
-          } else {
-            alert('Senha incorreta.');
-          }
-        };
-        respostaDiv.appendChild(apagarRespostaBtn);
-      }
+      const apagarRespostaBtn = document.createElement('button');
+      apagarRespostaBtn.textContent = 'Apagar resposta';
+      apagarRespostaBtn.style.marginLeft = '10px';
+      apagarRespostaBtn.onclick = function() {
+        const senha = prompt('Digite a senha para apagar a resposta:');
+        if (senha === '040609') {
+          delete comentarios[index].resposta;
+          localStorage.setItem('comentarios', JSON.stringify(comentarios));
+          mostrarComentariosSalvos();
+        } else {
+          alert('Senha incorreta!');
+        }
+      };
 
+      respostaDiv.appendChild(apagarRespostaBtn);
       comentarioDiv.appendChild(respostaDiv);
     }
 
     listaComentarios.appendChild(comentarioDiv);
   });
-    }
+}
     
   </script>
 
