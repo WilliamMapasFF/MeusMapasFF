@@ -266,6 +266,11 @@ function enviarComentario() {
     return;
   }
 
+  if (nomeUsuario.toLowerCase() === 'william mapasff') {
+    alert("O nome 'William MapasFF' é reservado e não pode ser usado.");
+    return;
+  }
+
   const novoComentario = {
     nome: nomeUsuario,
     texto: comentario
@@ -305,6 +310,7 @@ function mostrarComentariosSalvos() {
         const resposta = prompt('Digite sua resposta:');
         if (resposta) {
           comentarios[index].resposta = resposta;
+          comentarios[index].dono = true; // marca como respondido pelo dono
           localStorage.setItem('comentarios', JSON.stringify(comentarios));
           mostrarComentariosSalvos();
         }
@@ -336,10 +342,13 @@ function mostrarComentariosSalvos() {
       const apagarRespostaBtn = document.createElement('button');
       apagarRespostaBtn.textContent = 'Apagar resposta';
       apagarRespostaBtn.style.marginLeft = '10px';
+      apagarRespostaBtn.style.backgroundColor = '#e53935';
+      apagarRespostaBtn.style.color = '#fff';
       apagarRespostaBtn.onclick = function() {
         const senha = prompt('Digite a senha para apagar a resposta:');
         if (senha === '040609') {
           delete comentarios[index].resposta;
+          delete comentarios[index].dono;
           localStorage.setItem('comentarios', JSON.stringify(comentarios));
           mostrarComentariosSalvos();
         } else {
