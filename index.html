@@ -339,10 +339,12 @@ function mostrarComentariosSalvos() {
     apagarBtn.style.backgroundColor = '#e53935';
     apagarBtn.style.color = '#fff';
     apagarBtn.onclick = function() {
-      comentarios.splice(index, 1);
-      localStorage.setItem('comentarios', JSON.stringify(comentarios));
-      mostrarComentariosSalvos();
-    };
+  if (confirm('Tem certeza que quer apagar este comentário?')) {
+    comentarios.splice(index, 1);
+    localStorage.setItem('comentarios', JSON.stringify(comentarios));
+    mostrarComentariosSalvos();
+  }
+};
 
     comentarioDiv.appendChild(responderBtn);
     comentarioDiv.appendChild(apagarBtn);
