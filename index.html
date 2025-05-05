@@ -381,6 +381,19 @@ function mostrarComentariosSalvos() {
     listaComentarios.appendChild(comentarioDiv);
   });
 }
+
+    document.getElementById('comentario').addEventListener('input', function() {
+  const maxCaracteres = 500;
+  const atual = this.value.length;
+  const contador = document.getElementById('contadorCaracteres');
+  contador.textContent = `${atual} / ${maxCaracteres}`;
+
+  if (atual > maxCaracteres) {
+    contador.style.color = 'red';
+  } else {
+    contador.style.color = '#ccc';
+  }
+});
     
   </script>
 
