@@ -181,6 +181,19 @@
   <div id="comentarios" style="margin-top: 30px; text-align: left;"></div>
 </div>
 
+  <div>
+  <button onclick="mostrarEmojis()">🙂 Emoji</button>
+  <div id="emojiPicker" style="display: none; margin-top: 5px;">
+    <span onclick="inserirEmoji('😀')">😀</span>
+    <span onclick="inserirEmoji('😂')">😂</span>
+    <span onclick="inserirEmoji('😍')">😍</span>
+    <span onclick="inserirEmoji('👍')">👍</span>
+    <span onclick="inserirEmoji('🔥')">🔥</span>
+    <span onclick="inserirEmoji('😢')">😢</span>
+    <!-- Você pode adicionar mais emojis aqui -->
+  </div>
+  </div>
+
   <!-- OUTROS ELEMENTOS AQUI -->
 
   <script>
@@ -316,8 +329,7 @@ function mostrarComentariosSalvos() {
     comentarioDiv.style.borderRadius = '8px';
     comentarioDiv.style.marginBottom = '10px';
 
-    const tempo = tempoDecorrido(comentario.dataEnvio);
-comentarioDiv.innerHTML = `<strong>${comentario.nome}</strong> <span style="color: #aaa; font-size: 12px;">(${tempo})</span>: ${comentario.texto}`;
+    comentarioDiv.innerHTML = `<strong>${comentario.nome}</strong>: ${comentario.texto}`;
 
     const responderBtn = document.createElement('button');
     responderBtn.textContent = 'Responder';
@@ -397,24 +409,15 @@ comentarioDiv.innerHTML = `<strong>${comentario.nome}</strong> <span style="colo
   }
 });
 
-    function tempoDecorrido(timestamp) {
-  const agora = Date.now();
-  const diffMs = agora - timestamp;
-  const segundos = Math.floor(diffMs / 1000);
-  const minutos = Math.floor(segundos / 60);
-  const horas = Math.floor(minutos / 60);
-  const dias = Math.floor(horas / 24);
+    function mostrarEmojis() {
+  const picker = document.getElementById('emojiPicker');
+  picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
+}
 
-  if (dias > 0) {
-    return `há ${dias} dia${dias > 1 ? 's' : ''}`;
-  } else if (horas > 0) {
-    return `há ${horas} hora${horas > 1 ? 's' : ''}`;
-  } else if (minutos > 0) {
-    return `há ${minutos} minuto${minutos > 1 ? 's' : ''}`;
-  } else {
-    return `há poucos segundos`;
-  }
-    }
+function inserirEmoji(emoji) {
+  const input = document.getElementById('comentario'); // ou o id do seu textarea
+  input.value += emoji;
+}
     
   </script>
 
