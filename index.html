@@ -197,6 +197,7 @@
 
   <!-- Apagar emoji -->
 <button onclick="removerUltimoEmoji()">⛔ Apagar Emoji</button>
+  <span onclick="apagarUltimoEmoji()">⛔</span>
 
   <!-- OUTROS ELEMENTOS AQUI -->
 
@@ -423,13 +424,17 @@ function inserirEmoji(emoji) {
   input.value += emoji;
 }
 
-    function removerUltimoEmoji() {
-  const campo = document.getElementById('comentario');
-  campo.value = campo.value.trim().replace(/\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu, (match, offset, string) => {
-    const antes = string.slice(0, offset);
-    const depois = string.slice(offset + match.length);
-    return antes + depois;
-  });
+    function apagarUltimoEmoji() {
+  const textarea = document.getElementById("comentario");
+  const texto = textarea.value;
+
+  // Remove o último caractere ou emoji
+  const novoTexto = texto.replace(
+    /([\uD800-\uDBFF][\uDC00-\uDFFF]|\p{Emoji_Presentation}|\p{Extended_Pictographic}|\p{Emoji})\s*$/gu,
+    ""
+  );
+  
+  textarea.value = novoTexto;
     }
     
   </script>
