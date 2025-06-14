@@ -72,6 +72,23 @@
     .toggle-music-button:hover {
       background-color: #e64a19;
     }
+
+    .botao-verde {
+  background-color: #00e676;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.botao-verde:hover {
+  background-color: #00c853;
+}
+    
   </style>
 </head>
 <body>
@@ -196,7 +213,7 @@
   </div>
   
   <!-- Apagar emoji -->
-  <span onclick="apagarUltimoEmoji()">⛔</span>
+  <button onclick="apagarUltimoEmoji()" class="botao-verde">⛔ Apagar Emoji</button>
                                               
   
 
