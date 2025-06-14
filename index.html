@@ -183,16 +183,20 @@
 
   <div>
   <button onclick="mostrarEmojis()">🙂 Emoji</button>
-  <div id="emojiPicker" style="display: none; margin-top: 50px;">
+  <div id="emojiPicker" style="display: none; margin-top: 5px;">
     <span onclick="inserirEmoji('😀')">😀</span>
     <span onclick="inserirEmoji('😂')">😂</span>
     <span onclick="inserirEmoji('😍')">😍</span>
     <span onclick="inserirEmoji('👍')">👍</span>
     <span onclick="inserirEmoji('🔥')">🔥</span>
     <span onclick="inserirEmoji('😢')">😢</span>
+    <span onclick="inserirEmoji('🙂')">🙂</span>
     <!-- Você pode adicionar mais emojis aqui -->
   </div>
   </div>
+
+  <!-- Apagar emoji -->
+<button onclick="removerUltimoEmoji()">⛔ Apagar Emoji</button>
 
   <!-- OUTROS ELEMENTOS AQUI -->
 
@@ -418,6 +422,15 @@ function inserirEmoji(emoji) {
   const input = document.getElementById('comentario'); // ou o id do seu textarea
   input.value += emoji;
 }
+
+    function removerUltimoEmoji() {
+  const campo = document.getElementById('comentario');
+  campo.value = campo.value.trim().replace(/\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu, (match, offset, string) => {
+    const antes = string.slice(0, offset);
+    const depois = string.slice(offset + match.length);
+    return antes + depois;
+  });
+    }
     
   </script>
 
